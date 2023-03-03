@@ -183,14 +183,14 @@ function getRandomInt(max) {
 }
 
 function generateQuestion(wordObj, words) {
-  const incorrectWords = [
-    words[getRandomInt(words.length)].word,
-    words[getRandomInt(words.length)].word
-  ];
-  const options = [
-    wordObj.word,
-    ...incorrectWords
-  ];
+  let incorrectWords = [];
+  while (incorrectWords.length < 2) {
+    const randomWord = words[getRandomInt(words.length)].word;
+    if (randomWord !== wordObj.word && !incorrectWords.includes(randomWord)) {
+      incorrectWords.push(randomWord);
+    }
+  }
+  const options = [    wordObj.word,    ...incorrectWords  ];
   
   options.sort(() => Math.random() - 0.5);
   
@@ -202,6 +202,7 @@ function generateQuestion(wordObj, words) {
   
   return question;
 }
+
 
 function askQuestion(question) {
   return new Promise((resolve, reject) => {
